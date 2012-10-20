@@ -2,26 +2,28 @@
 #include<cstdlib>
 #include<sys/time.h>
 #include<unistd.h>
+#include<sys/wait.h>
 
 using namespace std;
 
 int main(){
 	int i,j,k;
-	int iterations = 100, sum = 0 , avg = 0, time = 0;
+	int iterations = 1, t = 0, pid = 0;
+	
 	struct timeval startTime, endTime;
-	pthread_t thread;
 
-	for(i = 0 ; i < iterations ; i++){
-		gettimeofday(&startTime, NULL);	
-		system("./SampleTask.out &");
-		gettimeofday(&endTime, NULL);
-		time = (endTime.tv_sec - startTime.tv_sec)*1000000 + (endTime.tv_usec - startTime.tv_usec);
-		cout << time << endl;
-		sum += time;
-	}	
+	gettimeofday(&startTime, NULL);	
+	pid = fork();
+	gettimeofday(&endTime, NULL);
+	if(pid == 0){
+		t= (endTime.tv_sec - startTime.tv_sec)*1000000 + (endTime.tv_usec - startTime.tv_usec);
+		cout << t << endl;
+		exit(0);
+	}
+	else {
+		wait(NULL);
+	}
 
-	avg = sum/iterations;
-	cout << "Average : " << avg << endl;
 	return 0;
 }
 
