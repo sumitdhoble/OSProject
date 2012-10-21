@@ -13,7 +13,7 @@ using namespace std;
 int main(){
 
 	int i,j,k;
-	int pid = 0, iterations = 2;
+	int pid = 0, iterations = 100;
 	char buf;
 	int pipePC[2];
 	int pipeCP[2];
@@ -30,12 +30,9 @@ int main(){
 		struct timeval startTime, endTime, startTime2, endTime2;
 
 		while(i > 0){
-
-			cout << "i : " << i << endl;
 			
 			close(pipePC[1]);
 			read(pipePC[0], &buf, 1);
-			cout << buf << endl;
 			gettimeofday(&endTime, NULL);
 			close(pipePC[0]);
 
@@ -43,7 +40,6 @@ int main(){
 			fscanf(fp,"%ld %ld", &startTime.tv_sec, &startTime.tv_usec);
 			fclose(fp);
 			t1 += (endTime.tv_sec - startTime.tv_sec)*1000000 + (endTime.tv_usec - startTime.tv_usec);
-			cout << "t1 : " << t1 << endl;
 
 			close(pipeCP[0]);
 			gettimeofday(&startTime2, NULL);
@@ -56,7 +52,7 @@ int main(){
 			i--;
 		}
 
-		cout << "t1 : " << (float)t1 / iterations << endl;
+		cout << "t1\t" << (float)t1 / iterations << endl;
 		exit(0);
 	}
 	else {
@@ -65,8 +61,6 @@ int main(){
 		struct timeval startTime, endTime, startTime2, endTime2;
 
 		while(i > 0){
-
-			cout << "i : " << i << endl;
 
 			close(pipePC[0]);          
 			gettimeofday(&startTime, NULL);
@@ -79,20 +73,18 @@ int main(){
 			
 			close(pipeCP[1]);
 			read(pipeCP[0], &buf, 1);
-			cout << buf << endl;
 			gettimeofday(&endTime2, NULL);
 			fp = (FILE *)fopen("fileChild.txt", "r");
 			fscanf(fp,"%ld %ld", &startTime2.tv_sec, &startTime2.tv_usec);
 			fclose(fp);
 			close(pipeCP[0]);
 			t2 += (endTime2.tv_sec - startTime2.tv_sec)*1000000 + (endTime2.tv_usec - startTime2.tv_usec);
-			cout << "t2 : " << t2 << endl;
 
 			i--;
 		}
 
     wait(NULL);                /* Wait for child */
-		cout << "t2 : " << (float)t2 / iterations << endl;
+		cout << "t2\t" << (float)t2 / iterations << endl;
     exit(0);
 	}
 
