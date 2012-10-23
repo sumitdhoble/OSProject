@@ -1,0 +1,25 @@
+#/proc/cpuinfo
+Intel(R) Core(TM) i7-2600 CPU @ 3.40GHz
+
+#dmidecode
+L1 cache: 256KB
+L2 cache: 1024 KB
+L3 cache: 8192 KB
+
+ISA: x86-64
+
+#lshw
+Memory: SODIMM DDR3 (0.8ns) 4 X 4GB
+Memory bus speed: 1333 MHz
+
+#lspci
+#hdparm -I /dev/sda
+I/O bus: Serial ATA
+I/O controller: Intel Corporation 6 Series/C200 Series Chipset Family SATA AHCI Controller
+HD capacity: 1500 GB
+RPM: 7200
+#HDD specifications: Seagate ST31500341AS
+Cache size: 32MB
+
+#ethtool eth0
+Network card speed: 1000Mbps
