@@ -1,31 +1,28 @@
 #include<iostream>
-#include<pthread.h>
-#include<sys/time.h>
-#include<unistd.h>
+#include"rdtsc.h"
+
+#define CLOCK_RATE 3.4
 
 using namespace std;
-
-void doNothing(int i,int j,int k, int l){
-}
 
 int main(){
 	int i, j, k, l, m, n, o, p;
 	bool comparison;
-	int iterations = 100000000;
+	int iterations = 1000000;
 	int measurements = 100;
-	struct timeval startTime, endTime, testTime;
+//	struct timeval startTime, endTime, testTime, testTime2, testTime3;
 	int runtime;
 	float measurementResult = 0.0, finalResult = 0.0, sum = 0.0;
+	long int startTime, endTime;
 
 	for (i = 0; i < measurements; i++) {
-		gettimeofday(&startTime, NULL);
+		startTime = rdtsc();
 		for (j = 0; j < iterations; j++) {
 		}
-		gettimeofday(&endTime, NULL);
-		runtime = (endTime.tv_sec - startTime.tv_sec)*1000000 + (endTime.tv_usec - startTime.tv_usec);
-		measurementResult = (float)runtime/iterations;
+		endTime = rdtsc();
+		runtime = endTime - startTime;
+		measurementResult = (float)runtime/iterations*(1/CLOCK_RATE);
 		cout << measurementResult << endl;
-		sum += measurementResult;
 	}
 	//finalResult = (float)sum/measurements;
 	//cout << finalResult << endl;
