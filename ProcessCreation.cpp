@@ -1,8 +1,10 @@
 #include<iostream>
 #include<cstdlib>
-#include<sys/time.h>
-#include<unistd.h>
+#include<cstdio>
 #include<sys/wait.h>
+#include"rdtsc.h"
+
+#define CLOCK_RATE 3.4
 
 using namespace std;
 
@@ -10,13 +12,13 @@ int main(){
 	int i,j,k;
 	int iterations = 1, t = 0, pid = 0;
 	
-	struct timeval startTime, endTime;
+	long int startTime, endTime;
 
-	gettimeofday(&startTime, NULL);	
+	startTime = rdtsc();
 	pid = fork();
-	gettimeofday(&endTime, NULL);
+	endTime = rdtsc();
 	if(pid != 0){
-		t= (endTime.tv_sec - startTime.tv_sec)*1000000 + (endTime.tv_usec - startTime.tv_usec);
+		t = (endTime - startTime)*(1/CLOCK_RATE);
 		cout << t << endl;
 		exit(0);
 	}

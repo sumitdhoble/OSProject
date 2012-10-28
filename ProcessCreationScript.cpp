@@ -6,7 +6,7 @@
 
 int main(){
 
-	int i = 0, iterations = 100000;
+	int i = 0, iterations = 10000;
 
 	system("g++ ProcessCreation.cpp -o ProcessCreation");
 
