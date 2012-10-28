@@ -10,8 +10,8 @@ using namespace std;
 
 int main(){
 	int i,j,k;
-	int iterations = 1, t = 0, pid = 0;
-	
+	int iterations = 1,  pid = 0;
+	float t;
 	long int startTime, endTime;
 
 	startTime = rdtsc();
