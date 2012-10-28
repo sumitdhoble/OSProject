@@ -6,7 +6,7 @@
 
 int main(){
 
-	int i = 0, iterations = 20;
+	int i = 0, iterations = 100;
 
 	system("g++ ProcessContextSwitch.cpp -o ProcessContextSwitch");
 

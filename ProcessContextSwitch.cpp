@@ -10,79 +10,67 @@ using namespace std;
 int main(){
 
 	int i,j,k;
-	int pid = 0, iterations = 100;
-	char buf;
+	int pid = 0, iterations = 1000000;
 	int pipePC[2];
 	int pipeCP[2];
 	FILE *fp;
 
-	 if (pipe(pipePC) == -1 || pipe(pipeCP) == -1) {
-      exit(EXIT_FAILURE);
-  }
-
-	fp = (FILE *)fopen("ContextSwitch1StartTime.txt", "w");
-	fp = (FILE *)fopen("ContextSwitch1EndTime.txt", "w");
-	fp = (FILE *)fopen("ContextSwitch2StartTime.txt", "w");
-	fp = (FILE *)fopen("ContextSwitch2EndTime.txt", "w");
+	if (pipe(pipePC) == -1 || pipe(pipeCP) == -1) {
+      		exit(EXIT_FAILURE);
+	}
 
 	pid = fork();
 
 	if(pid == 0){
-		int i = iterations, t1 = 0;		
-		struct timeval startTime, endTime, startTime2, endTime2;
+		int i = iterations, t1 = 0, time1;		
+		struct timeval startTime1, endTime1, startTime2, endTime2;
+		char buf;
 
-		while(i > 0){
-git			
+		gettimeofday(&startTime1, NULL);
+		for(i = iterations; i > 0; i--){
+			
 			close(pipePC[1]);
 			read(pipePC[0], &buf, 1);
-			gettimeofday(&endTime, NULL);
 			close(pipePC[0]);
-			fp = (FILE *)fopen("ContextSwitch1EndTime.txt", "a");
-			fprintf(fp,"%ld\t%ld\n", endTime.tv_sec, endTime.tv_usec);
-			fclose(fp);
+			//cout << "Received " << buf << endl; 
 
 			close(pipeCP[0]);
-			gettimeofday(&startTime2, NULL);
 			write(pipeCP[1], "h" , 1);
-			fp = (FILE *)fopen("ContextSwitch2StartTime.txt", "a");
-			fprintf(fp,"%ld\t%ld\n", startTime2.tv_sec, startTime2.tv_usec);
-			fclose(fp);
-
 			close(pipeCP[1]);
-
-			i--;
+			//cout << "Written " << "h" << endl;
 		}
+		gettimeofday(&endTime1, NULL);
+		time1 = (endTime1.tv_sec - startTime1.tv_sec)*1000000 + (endTime1.tv_usec - startTime1.tv_usec);
+		cout << (float)time1/(iterations) << endl;
 
 		exit(0);
 	}
 	else {
-		int i = iterations, t2 = 0;
-		struct timeval startTime, endTime, startTime2, endTime2;
+		int i = iterations, t2 = 0, time2;
+		struct timeval startTime1, endTime1, startTime2, endTime2;
+		char buf;
 
-		while(i > 0){
+		gettimeofday(&startTime2, NULL);
+		for(i = iterations; i > 0; i--){
 
 			close(pipePC[0]);          
-			gettimeofday(&startTime, NULL);
 			write(pipePC[1], "w" , 1);
-			fp = (FILE *)fopen("ContextSwitch1StartTime.txt", "a");
-			fprintf(fp,"%ld\t%ld\n", startTime.tv_sec, startTime.tv_usec);
-			fclose(fp);		  
 			close(pipePC[1]);
+			//cout << "Written w" << endl;
 			
 			
 			close(pipeCP[1]);
 			read(pipeCP[0], &buf, 1);
-			gettimeofday(&endTime2, NULL);
-			fp = (FILE *)fopen("ContextSwitch2EndTime.txt", "a");
-			fprintf(fp,"%ld\t%ld\n", endTime2.tv_sec, endTime2.tv_usec);
-			fclose(fp);
 			close(pipeCP[0]);
-
-			i--;
+			//cout << "Received "  << buf << endl;
 		}
+		gettimeofday(&endTime2, NULL);
+		time2 = (endTime2.tv_sec - startTime2.tv_sec)*1000000 + (endTime2.tv_usec - startTime2.tv_usec);
+		cout <<  (float)time2/(iterations) << endl;
 
-    wait(NULL);                /* Wait for child */
-    exit(0);
+
+		    wait(NULL);               /* Wait for child */
+		    exit(0);
 	}
 
 	return 0;
