@@ -15,7 +15,7 @@ int main(){
 	gettimeofday(&startTime, NULL);	
 	pid = fork();
 	gettimeofday(&endTime, NULL);
-	if(pid == 0){
+	if(pid != 0){
 		t= (endTime.tv_sec - startTime.tv_sec)*1000000 + (endTime.tv_usec - startTime.tv_usec);
 		cout << t << endl;
 		exit(0);

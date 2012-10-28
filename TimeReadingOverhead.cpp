@@ -20,6 +20,9 @@ int main(){
 	for (i = 0; i < measurements; i++) {
 		gettimeofday(&startTime, NULL);
 		for (j = 0; j < iterations; j++) {
+			gettimeofday(&testTime, NULL);
+			gettimeofday(&testTime, NULL);
+			gettimeofday(&testTime, NULL);
 		}
 		gettimeofday(&endTime, NULL);
 		runtime = (endTime.tv_sec - startTime.tv_sec)*1000000 + (endTime.tv_usec - startTime.tv_usec);
