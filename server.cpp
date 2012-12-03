@@ -39,28 +39,25 @@ int main(){
                 return -1;
         }
 
-        char message[50];
+        char message[2];
+	char message2[2] = {'w','\0'};
 
-        if( recv(new_socket_desc, message, 50, 0) < 0 ) {
-              cout << "Recv message failed" << endl;
-              return -1;
-        }else{
-              cout << "Message Received : " << endl;
-              cout << message << endl;
-        }
+	if( recv(new_socket_desc, message, 2, 0) < 0 ) {
+	      cout << "Recv message failed" << endl;
+	      return -1;
+	}else{
+	   //   cout << "Message Received : " << message << endl;
+	}
 
-        cout << "Sending message ... " << endl;
+//	cout << "Sending message ... " << endl;
 
-        char message2[2] = "w";
-        if( send(new_socket_desc, message2, strlen(message), 0) < 0 ){
-                cout << "Could not send data to socket 2" << endl;
-                return -1;
-        }
+	if( send(new_socket_desc, message2, strlen(message2), 0) < 0 ){
+		cout << "Could not send data to socket 2" << endl;
+		return -1;
+	}
 
-        cout << "Message received : " << message2 << endl;
         close(socket_desc);
-
-        cout << "Server successful" << endl;
+  //      cout << "Server successful" << endl;
         return 0;
 }
 
